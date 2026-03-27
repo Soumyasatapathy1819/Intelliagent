@@ -7,9 +7,26 @@ import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
-const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+const allowedOrigins = (
+  process.env.CORS_ORIGIN ||
+  "http://localhost:5173,https://super-starship-000fa0.netlify.app"
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use(cors({ origin: allowedOrigin, credentials: true }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    credentials: true
+  })
+);
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
