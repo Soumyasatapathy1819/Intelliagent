@@ -10,73 +10,79 @@ export default function Sidebar({
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/50 transition-opacity md:hidden ${
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-30 bg-black/55 transition-opacity md:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={onClose}
       />
+
       <aside
-        className={`fixed md:static inset-y-0 left-0 w-72 bg-panel/90 border-r border-slate-800/70 backdrop-blur p-5 flex flex-col gap-4 transform transition-transform ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-white/10 bg-[#0b1020] transition-transform md:static md:w-[260px] ${
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
           <div>
-            <h1 className="text-xl font-bold text-white">IntelliAgent</h1>
-            <p className="text-xs text-slate-400">Multimodal Workspace</p>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-sky-200/70">
+              IntelliAgent
+            </div>
+            <div className="mt-1 text-lg font-semibold text-white">Chats</div>
           </div>
+
           <button
             onClick={onClose}
-            className="md:hidden text-slate-400"
+            className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-slate-400 md:hidden"
             aria-label="Close sidebar"
           >
-            ✕
+            Close
           </button>
         </div>
 
-        <button
-          onClick={onNewChat}
-          className="bg-accent text-slate-900 py-2 rounded-xl font-semibold shadow-glow"
-        >
-          + New Chat
-        </button>
+        <div className="p-4">
+          <button
+            onClick={onNewChat}
+            className="w-full rounded-2xl bg-white text-slate-950 px-4 py-3 text-sm font-semibold transition hover:bg-slate-200"
+          >
+            New chat
+          </button>
+        </div>
 
-        <div className="flex-1 overflow-y-auto space-y-2">
+        <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-3">
           {chats.length === 0 && (
-            <div className="text-sm text-slate-500">No chats yet.</div>
+            <div className="rounded-2xl border border-dashed border-white/10 px-4 py-4 text-sm leading-6 text-slate-500">
+              No chat history yet.
+            </div>
           )}
 
-          {chats.map((chat) => (
-            <div
-              key={chat._id}
-              className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2 border ${
-                activeChatId === chat._id
-                  ? "border-accent text-white"
-                  : "border-slate-800 text-slate-300"
-              }`}
-            >
-              <button
-                onClick={() => onSelect(chat._id)}
-                className="flex-1 text-left"
+          <div className="space-y-2">
+            {chats.map((chat) => (
+              <div
+                key={chat._id}
+                className={`group rounded-2xl border px-3 py-3 transition ${
+                  activeChatId === chat._id
+                    ? "border-white/20 bg-white/[0.08]"
+                    : "border-transparent hover:bg-white/[0.05]"
+                }`}
               >
-                <div className="text-sm font-medium truncate">
-                  {chat.title || "Untitled Chat"}
-                </div>
-                {chat.lastMessageAt && (
-                  <div className="text-xs text-slate-500">
-                    {new Date(chat.lastMessageAt).toLocaleDateString()}
+                <button onClick={() => onSelect(chat._id)} className="w-full text-left">
+                  <div className="truncate text-sm font-medium text-white">
+                    {chat.title || "Untitled chat"}
                   </div>
-                )}
-              </button>
-              <button
-                onClick={() => onDelete(chat._id)}
-                className="text-xs text-slate-500 hover:text-red-400"
-                aria-label="Delete chat"
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+                  <div className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">
+                    {chat.lastMessage || "No messages yet"}
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => onDelete(chat._id)}
+                  className="mt-3 text-xs text-slate-500 transition hover:text-rose-300"
+                  aria-label="Delete chat"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </aside>
     </>

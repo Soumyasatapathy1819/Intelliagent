@@ -7,7 +7,11 @@ export default function CodeBlock({ inline, className, children }) {
   const code = String(children).replace(/\n$/, "");
 
   if (inline) {
-    return <code className="px-1 py-0.5 rounded bg-slate-800/70">{code}</code>;
+    return (
+      <code className="rounded-lg bg-white/10 px-1.5 py-0.5 text-[0.95em] text-sky-100">
+        {code}
+      </code>
+    );
   }
 
   const copy = async () => {
@@ -17,17 +21,17 @@ export default function CodeBlock({ inline, className, children }) {
   };
 
   return (
-    <div className="relative bg-black/70 rounded-xl p-4 mt-3 border border-slate-800">
-      <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
+    <div className="relative mt-4 overflow-hidden rounded-2xl border border-white/10 bg-[#050816]">
+      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-xs uppercase tracking-[0.2em] text-slate-400">
         <span>{language || "code"}</span>
         <button
           onClick={copy}
-          className="text-xs bg-accent text-slate-900 px-2 py-1 rounded"
+          className="rounded-full bg-sky-300 px-3 py-1.5 text-[11px] font-semibold text-slate-950"
         >
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
-      <pre className="overflow-x-auto text-sm">
+      <pre className="overflow-x-auto p-4 text-sm text-slate-100">
         <code>{code}</code>
       </pre>
     </div>

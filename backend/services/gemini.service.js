@@ -13,10 +13,19 @@ const getTextModelName = () =>
 const getVisionModelName = () =>
   process.env.GEMINI_VISION_MODEL || "gemini-2.5-flash";
 
+const serializeMessages = (messages) =>
+  messages
+    .filter((message) => message?.content)
+    .map((message) => {
+      const role = message.role?.toUpperCase() || "USER";
+      return `[${role}]\n${message.content.trim()}`;
+    })
+    .join("\n\n");
+
 export const generateTextResponse = async (messages) => {
   const genAI = getClient();
   const model = genAI.getGenerativeModel({ model: getTextModelName() });
-  const prompt = messages.map((m) => `${m.role}: ${m.content}`).join("\n");
+  const prompt = serializeMessages(messages);
 
   const result = await model.generateContent(prompt);
   return result.response.text();
