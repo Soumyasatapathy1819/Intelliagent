@@ -1,11 +1,11 @@
-﻿# IntelliAgent
+# IntelliAgent
 
 IntelliAgent is a multimodal assistant web app: a Vite + React frontend with an Express + MongoDB backend, using Google Generative AI (Gemini) for text and vision. The app supports conversational chat, file upload (PDF/CSV) analysis, image analysis, optional web search augmentation, and client-side speech synthesis.
 
 Repository structure (top-level):
 
 - backend/
-	- app.js                 # Express app, CORS, middleware
+	- app.js                 # Express app, middleware
 	- server.js              # Server entrypoint
 	- package.json
 	- config/db.js           # MongoDB connector
@@ -42,16 +42,13 @@ API endpoints (backend)
 
 Environment variables
 Backend (required/optional):
-- `PORT` — optional, default 5000 (Render provides PORT).
+- `PORT` — optional, default 5000.
 - `MONGO_URI` — MongoDB connection string (required in production).
 - `GEMINI_API_KEY` — Google Generative AI key (required).
 - `GEMINI_TEXT_MODEL` — optional (default: `gemini-2.5-flash`).
 - `GEMINI_VISION_MODEL` — optional (default: `gemini-2.5-flash`).
-- `CORS_ORIGIN` — comma-separated allowed origins (e.g. `https://app.vercel.app,https://another.com`).
-- `FRONTEND_URL` — frontend URL (Vercel) to auto-allow.
-- `CORS_ALLOW_ALL` — `true` to allow all origins (development only).
 
-Frontend: set `VITE_API_URL` in Vercel (e.g. `https://your-backend.onrender.com/api`). Local default points to `https://intelliagent-ai.onrender.com/api`.
+Frontend: set `VITE_API_URL` to your backend API base (for example `https://your-backend.example.com/api`). Local default points to `https://intelliagent-ai.onrender.com/api`.
 
 Quickstart — local development
 1. Install dependencies and run backend:
@@ -73,12 +70,7 @@ npm run dev
 
 3. Open the frontend at http://localhost:5173 and verify backend at http://localhost:5000/api/health
 
-Deployment notes
-- Frontend: deploy `frontend/` to Vercel. Set `VITE_API_URL` to your backend API base (e.g. `https://your-backend.onrender.com/api`).
-- Backend: deploy `backend/` to Render (or your preferred host). Set `MONGO_URI`, `GEMINI_API_KEY`, and `CORS_ORIGIN` (include the Vercel frontend URL). Render sets `PORT` automatically.
-- The backend supports `CORS_ORIGIN`, `FRONTEND_URL`, and `VERCEL_URL` for automatic origin whitelisting; prefer setting `CORS_ORIGIN` on your Render service.
-
-Security and secrets
+- Security and secrets
 - Do NOT commit `.env` files. This repo previously contained `backend/.env` — rotate any exposed keys immediately.
 - To stop tracking `backend/.env` and remove it from the index:
 
@@ -113,4 +105,16 @@ Files and code pointers
 - Backend core: `backend/app.js`, `backend/server.js`, `backend/config/db.js`.
 - Controllers: `backend/controllers/chat.controller.js`, `file.controller.js`, `voice.controller.js`.
 - Services: `backend/services/gemini.service.js`, `pdf.service.js`, `csv.service.js`, `webSearch.service.js`.
+
+---
+License
+
+This project is licensed under the MIT License.
+
+Author
+
+Soumya Prakash Satapathy
+
+B.Tech CSE (Hons.), XIM University
+Data Analyst | AI Enthusiast | Developer
 
